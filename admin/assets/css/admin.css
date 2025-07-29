@@ -1,0 +1,488 @@
+/* Auto Delete Post Admin Styles */
+
+.adp-admin-container {
+    max-width: 1200px;
+    margin: 20px 0;
+}
+
+/* Tabs */
+.adp-tabs {
+    margin-bottom: 20px;
+}
+
+.adp-tab-content {
+    display: none;
+}
+
+.adp-tab-content.adp-tab-active {
+    display: block;
+}
+
+/* Cards */
+.adp-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.adp-card h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #23282d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.adp-card h2 .dashicons {
+    color: #0073aa;
+}
+
+/* Toggle Switches */
+.adp-toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.adp-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.adp-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.adp-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.adp-toggle input:checked + .adp-toggle-slider {
+    background-color: #0073aa;
+}
+
+.adp-toggle input:checked + .adp-toggle-slider:before {
+    transform: translateX(26px);
+}
+
+/* Status Badges */
+.adp-status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.adp-status-enabled {
+    background-color: #46b450;
+    color: white;
+}
+
+.adp-status-disabled {
+    background-color: #dc3232;
+    color: white;
+}
+
+/* Status Grid */
+.adp-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.adp-status-item {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border-left: 4px solid #0073aa;
+}
+
+.adp-status-item h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.adp-status-value {
+    font-weight: 600;
+    color: #23282d;
+}
+
+/* Statistics Grid */
+.adp-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.adp-stat-item {
+    text-align: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border-top: 4px solid #0073aa;
+}
+
+.adp-stat-item h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.adp-stat-number {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0073aa;
+    line-height: 1;
+}
+
+.adp-stat-value {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+/* Logs */
+.adp-logs-actions {
+    margin-bottom: 15px;
+}
+
+.adp-logs-actions .button {
+    margin-right: 10px;
+}
+
+.adp-logs-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.adp-no-logs {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
+
+.adp-log-level {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.adp-log-info {
+    background-color: #0073aa;
+    color: white;
+}
+
+.adp-log-success {
+    background-color: #46b450;
+    color: white;
+}
+
+.adp-log-warning {
+    background-color: #ffb900;
+    color: #23282d;
+}
+
+.adp-log-error {
+    background-color: #dc3232;
+    color: white;
+}
+
+/* Form Improvements */
+.form-table th {
+    width: 200px;
+    padding: 15px 10px 15px 0;
+}
+
+.form-table td {
+    padding: 15px 10px;
+}
+
+.form-table .description {
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .adp-status-grid,
+    .adp-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .adp-logs-actions .button {
+        display: block;
+        margin-bottom: 5px;
+        margin-right: 0;
+    }
+    
+    .form-table th,
+    .form-table td {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+    }
+    
+    .form-table th {
+        border-bottom: none;
+    }
+}
+
+/* Loading States */
+.adp-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.adp-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: adp-spin 1s linear infinite;
+}
+
+@keyframes adp-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* User Selection */
+.adp-user-selection {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    background: #f9f9f9;
+}
+
+.adp-user-checkbox {
+    display: block;
+    margin-bottom: 8px;
+    padding: 4px 0;
+    cursor: pointer;
+}
+
+.adp-user-checkbox:hover {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    padding-left: 4px;
+}
+
+.adp-user-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Filter Sections */
+.adp-card h3 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #23282d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #e1e1e1;
+    padding-top: 20px;
+}
+
+.adp-card h3 .dashicons {
+    color: #0073aa;
+}
+
+/* Notifications */
+.adp-notice {
+    padding: 12px;
+    margin: 15px 0;
+    border-left: 4px solid #0073aa;
+    background: #f9f9f9;
+}
+
+.adp-notice.adp-notice-success {
+    border-left-color: #46b450;
+}
+
+.adp-notice.adp-notice-error {
+    border-left-color: #dc3232;
+}
+
+.adp-notice.adp-notice-warning {
+    border-left-color: #ffb900;
+}
+
+/* Filter Settings */
+.adp-card h3 {
+    margin: 25px 0 15px 0;
+    font-size: 16px;
+    color: #23282d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #e1e1e1;
+    padding-top: 20px;
+}
+
+.adp-card h3:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 15px;
+}
+
+.adp-card h3 .dashicons {
+    color: #0073aa;
+    font-size: 18px;
+}
+
+/* User Selection */
+.adp-user-selection {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    background: #fafafa;
+}
+
+.adp-user-checkbox {
+    display: block;
+    padding: 5px 0;
+    margin: 0;
+    font-weight: normal;
+}
+
+.adp-user-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.adp-user-checkbox:hover {
+    background-color: #f0f0f0;
+    padding-left: 5px;
+    margin-left: -5px;
+    border-radius: 3px;
+}
+
+/* Date Inputs */
+input[type="date"] {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input[type="date"]:focus {
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px #0073aa;
+    outline: none;
+}
+
+/* Radio Button Groups */
+.form-table label input[type="radio"] {
+    margin-right: 8px;
+}
+
+.form-table label {
+    font-weight: normal;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+/* Input Validation States */
+.adp-input-error {
+    border-color: #dc3232 !important;
+    box-shadow: 0 0 0 1px #dc3232 !important;
+}
+
+.adp-input-valid {
+    border-color: #46b450 !important;
+    box-shadow: 0 0 0 1px #46b450 !important;
+}
+
+/* User Controls */
+.adp-user-controls {
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.adp-user-controls .button {
+    margin-right: 5px;
+}
+
+/* Filter Section Styling */
+.adp-card table.form-table tr[style*="display: none"] {
+    display: none !important;
+}
+
+/* Disabled State for Filter Fields */
+input:disabled,
+select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Enhanced User Selection */
+.adp-user-selection {
+    transition: all 0.3s ease;
+}
+
+.adp-user-selection:empty::after {
+    content: "No users found";
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+    display: block;
+    text-align: center;
+}
+
+/* Filter Toggle Animation */
+.adp-toggle-checked .adp-toggle-slider {
+    background-color: #0073aa;
+}
+
+.adp-toggle-checked .adp-toggle-slider:before {
+    transform: translateX(26px);
+}
