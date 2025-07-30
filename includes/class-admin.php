@@ -18,6 +18,9 @@ class AutoDeletePostAdmin {
         add_action('wp_ajax_adp_clear_logs', array($this, 'ajaxClearLogs'));
         add_action('wp_ajax_adp_download_logs', array($this, 'ajaxDownloadLogs'));
         add_action('wp_ajax_adp_reset_statistics', array($this, 'ajaxResetStatistics'));
+        add_action('wp_ajax_adp_refresh_logs', array($this, 'ajaxRefreshLogs'));
+        add_action('wp_ajax_adp_refresh_statistics', array($this, 'ajaxRefreshStatistics'));
+        add_action('wp_ajax_adp_refresh_status', array($this, 'ajaxRefreshStatus'));
     }
     
     public function addAdminMenu() {
@@ -190,5 +193,57 @@ class AutoDeletePostAdmin {
             'daily' => 'Daily',
             'weekly' => 'Weekly'
         );
+    }
+    
+    public function ajaxRefreshLogs() {
+        check_ajax_referer('adp_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_die('Unauthorized');
+        }
+        
+        $logs = $this->logger->getLogs(50);
+        
+        wp_send_json_success(array(
+            'logs' => $logs
+        ));
+    }
+    
+    public function ajaxRefreshStatistics() {
+        check_ajax_referer('adp_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_die('Unauthorized');
+        }
+        
+        $statistics = $this->settings->getStatistics();
+        
+        wp_send_json_success(array(
+            'statistics' => $statistics
+        ));
+    }
+    
+    public function ajaxRefreshStatus() {
+        check_ajax_referer('adp_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_die('Unauthorized');
+        }
+        
+        $settings = $this->settings->getSettings();
+        $nextScheduled = wp_next_scheduled('remover_post_delete_cron');
+        
+        $status = array(
+            'global_enabled' => $settings['enabled'],
+            'posts_enabled' => $settings['posts']['enabled'],
+            'comments_enabled' => $settings['comments']['enabled'],
+            'categories_enabled' => $settings['categories']['enabled'],
+            'tags_enabled' => $settings['tags']['enabled'],
+            'next_execution' => $nextScheduled ? date('Y-m-d H:i:s', $nextScheduled) : 'Not scheduled'
+        );
+        
+        wp_send_json_success(array(
+            'status' => $status
+        ));
     }
 }
