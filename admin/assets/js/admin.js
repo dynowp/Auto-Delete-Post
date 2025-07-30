@@ -95,6 +95,11 @@ jQuery(document).ready(function($) {
         refreshLogs();
     });
     
+    // Refresh statistics functionality
+    $('#refresh-statistics').on('click', function() {
+        refreshStatistics();
+    });
+    
     // Form validation
     $('form').on('submit', function() {
         var isValid = true;
@@ -181,25 +186,176 @@ jQuery(document).ready(function($) {
     }
     
     function refreshLogs() {
-        var $container = $('.adp-logs-container');
+        var $button = $('#refresh-logs');
+        var $container = $('#logs-container');
+        
+        $button.addClass('adp-loading-btn').prop('disabled', true);
         $container.addClass('adp-loading');
         
-        // Reload the page to get fresh logs
-        // In a more advanced implementation, this could be an AJAX call
-        setTimeout(function() {
-            location.reload();
-        }, 500);
+        $.ajax({
+            url: adpAjax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'adp_refresh_logs',
+                nonce: adpAjax.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    updateLogsContainer(response.data.logs);
+                    showNotice('Logs atualizados com sucesso!', 'success');
+                } else {
+                    showNotice('Erro ao atualizar logs: ' + response.data, 'error');
+                }
+            },
+            error: function() {
+                showNotice('Erro ao conectar com o servidor.', 'error');
+            },
+            complete: function() {
+                $button.removeClass('adp-loading-btn').prop('disabled', false);
+                $container.removeClass('adp-loading');
+            }
+        });
+    }
+    
+    function refreshStatistics() {
+        var $button = $('#refresh-statistics');
+        var $container = $('#statistics-container');
+        
+        $button.addClass('adp-loading-btn').prop('disabled', true);
+        $container.addClass('adp-loading');
+        
+        $.ajax({
+            url: adpAjax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'adp_refresh_statistics',
+                nonce: adpAjax.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    updateStatisticsContainer(response.data.statistics);
+                    showNotice('Estatísticas atualizadas com sucesso!', 'success');
+                } else {
+                    showNotice('Erro ao atualizar estatísticas: ' + response.data, 'error');
+                }
+            },
+            error: function() {
+                showNotice('Erro ao conectar com o servidor.', 'error');
+            },
+            complete: function() {
+                $button.removeClass('adp-loading-btn').prop('disabled', false);
+                $container.removeClass('adp-loading');
+            }
+        });
     }
     
     function refreshStatus() {
-        // In a real implementation, this would make an AJAX call to get updated status
-        // For now, we'll just add a visual indicator
-        var $statusGrid = $('.adp-status-grid');
+        var $statusGrid = $('#status-container');
         $statusGrid.addClass('adp-loading');
         
-        setTimeout(function() {
-            $statusGrid.removeClass('adp-loading');
-        }, 1000);
+        $.ajax({
+            url: adpAjax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'adp_refresh_status',
+                nonce: adpAjax.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    updateStatusGrid(response.data.status);
+                }
+            },
+            complete: function() {
+                $statusGrid.removeClass('adp-loading');
+            }
+        });
+    }
+    
+    function updateLogsContainer(logs) {
+        var $container = $('#logs-container');
+        
+        if (!logs || logs.length === 0) {
+            $container.html('<p class="adp-no-logs">Nenhum log disponível.</p>');
+            return;
+        }
+        
+        var tableHtml = '<table class="wp-list-table widefat fixed striped">' +
+            '<thead><tr><th>Timestamp</th><th>Level</th><th>Message</th></tr></thead><tbody>';
+        
+        logs.forEach(function(log) {
+            var matches = log.match(/\[(.*?)\] \[(.*?)\] (.*)/);
+            var timestamp = matches ? matches[1] : '';
+            var level = matches ? matches[2] : 'INFO';
+            var message = matches ? matches[3] : log;
+            var levelClass = 'adp-log-' + level.toLowerCase();
+            
+            tableHtml += '<tr>' +
+                '<td>' + escapeHtml(timestamp) + '</td>' +
+                '<td><span class="adp-log-level ' + levelClass + '">' + escapeHtml(level) + '</span></td>' +
+                '<td>' + escapeHtml(message) + '</td>' +
+                '</tr>';
+        });
+        
+        tableHtml += '</tbody></table>';
+        $container.html(tableHtml);
+    }
+    
+    function updateStatisticsContainer(statistics) {
+        var $container = $('#statistics-container');
+        
+        var statsHtml = '<div class="adp-stat-item">' +
+            '<h3>Posts Deleted</h3>' +
+            '<span class="adp-stat-number">' + numberFormat(statistics.posts_deleted) + '</span>' +
+            '</div>' +
+            '<div class="adp-stat-item">' +
+            '<h3>Comments Deleted</h3>' +
+            '<span class="adp-stat-number">' + numberFormat(statistics.comments_deleted) + '</span>' +
+            '</div>' +
+            '<div class="adp-stat-item">' +
+            '<h3>Categories Deleted</h3>' +
+            '<span class="adp-stat-number">' + numberFormat(statistics.categories_deleted) + '</span>' +
+            '</div>' +
+            '<div class="adp-stat-item">' +
+            '<h3>Tags Deleted</h3>' +
+            '<span class="adp-stat-number">' + numberFormat(statistics.tags_deleted) + '</span>' +
+            '</div>' +
+            '<div class="adp-stat-item">' +
+            '<h3>Total Executions</h3>' +
+            '<span class="adp-stat-number">' + numberFormat(statistics.total_executions) + '</span>' +
+            '</div>' +
+            '<div class="adp-stat-item">' +
+            '<h3>Last Execution</h3>' +
+            '<span class="adp-stat-value">' + formatTimestamp(statistics.last_execution_time) + '</span>' +
+            '</div>';
+        
+        $container.html(statsHtml);
+    }
+    
+    function updateStatusGrid(status) {
+        // Atualizar o grid de status se necessário
+        // Esta função pode ser expandida conforme necessário
+    }
+    
+    function escapeHtml(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+    
+    function numberFormat(num) {
+        return parseInt(num).toLocaleString();
+    }
+    
+    function formatTimestamp(timestamp) {
+        if (!timestamp || timestamp === '0000-00-00 00:00:00') {
+            return 'Never';
+        }
+        return timestamp;
     }
     
     // Confirmation dialogs for dangerous actions
