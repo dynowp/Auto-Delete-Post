@@ -263,7 +263,7 @@ if (!defined('ABSPATH')) {
         <div id="status" class="adp-tab-content">
             <div class="adp-card">
                 <h2><span class="dashicons dashicons-dashboard"></span> Current Status</h2>
-                <div class="adp-status-grid">
+                <div class="adp-status-grid" id="status-container">
                     <div class="adp-status-item">
                         <h3>Global Status</h3>
                         <?php echo $this->getStatusBadge($settings['enabled']); ?>
@@ -295,7 +295,13 @@ if (!defined('ABSPATH')) {
             
             <div class="adp-card">
                 <h2><span class="dashicons dashicons-chart-bar"></span> Statistics</h2>
-                <div class="adp-stats-grid">
+                <div class="adp-stats-actions">
+                    <button type="button" class="button button-secondary" id="refresh-statistics">
+                        <span class="dashicons dashicons-update"></span> Refresh
+                    </button>
+                    <button type="button" class="button button-secondary" id="reset-statistics">Reset Statistics</button>
+                </div>
+                <div class="adp-stats-grid" id="statistics-container">
                     <div class="adp-stat-item">
                         <h3>Posts Deleted</h3>
                         <span class="adp-stat-number"><?php echo number_format($statistics['posts_deleted']); ?></span>
@@ -321,9 +327,6 @@ if (!defined('ABSPATH')) {
                         <span class="adp-stat-value"><?php echo $this->formatTimestamp($statistics['last_execution_time']); ?></span>
                     </div>
                 </div>
-                <p>
-                    <button type="button" class="button button-secondary" id="reset-statistics">Reset Statistics</button>
-                </p>
             </div>
         </div>
         
@@ -336,7 +339,7 @@ if (!defined('ABSPATH')) {
                     <button type="button" class="button button-secondary" id="refresh-logs">Refresh</button>
                 </div>
                 
-                <div class="adp-logs-container">
+                <div class="adp-logs-container" id="logs-container">
                     <?php if (empty($logs)): ?>
                         <p class="adp-no-logs">No logs available.</p>
                     <?php else: ?>
