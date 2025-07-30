@@ -70,6 +70,23 @@ if (!defined('ABSPATH')) {
                             </td>
                         </tr>
                         <tr>
+                            <th scope="row">Post Status Filter</th>
+                            <td>
+                                <?php
+                                $availableStatuses = $this->settings->getAvailablePostStatuses();
+                                $selectedStatuses = $this->settings->getPostStatuses();
+                                ?>
+                                <select name="auto_delete_post_settings[posts][status][]" multiple="multiple" class="adp-status-select" size="6">
+                                    <?php foreach ($availableStatuses as $statusValue => $statusLabel): ?>
+                                        <option value="<?php echo esc_attr($statusValue); ?>" <?php selected(in_array($statusValue, $selectedStatuses)); ?>>
+                                            <?php echo esc_html($statusLabel); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <p class="description">Select which post statuses to include for deletion. Hold Ctrl/Cmd to select multiple options.</p>
+                            </td>
+                        </tr>
+                        <tr>
                             <th scope="row">Delete Attachments</th>
                             <td>
                                 <label class="adp-toggle">
