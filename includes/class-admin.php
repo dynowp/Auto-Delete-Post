@@ -49,7 +49,7 @@ class AutoDeletePostAdmin {
         $sanitized['posts'] = array(
             'enabled' => isset($input['posts']['enabled']) ? (bool) $input['posts']['enabled'] : false,
             'limit' => isset($input['posts']['limit']) ? absint($input['posts']['limit']) : 50,
-            'status' => isset($input['posts']['status']) ? sanitize_text_field($input['posts']['status']) : 'any',
+            'status' => isset($input['posts']['status']) && is_array($input['posts']['status']) ? array_map('sanitize_text_field', $input['posts']['status']) : array('any'),
             'delete_attachments' => isset($input['posts']['delete_attachments']) ? (bool) $input['posts']['delete_attachments'] : false,
             'date_filter_enabled' => isset($input['posts']['date_filter_enabled']) ? (bool) $input['posts']['date_filter_enabled'] : false,
             'date_filter_mode' => isset($input['posts']['date_filter_mode']) ? sanitize_text_field($input['posts']['date_filter_mode']) : 'exclude',
