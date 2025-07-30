@@ -180,6 +180,26 @@
     margin-right: 10px;
 }
 
+/* Statistics Actions */
+.adp-stats-actions {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.adp-stats-actions .button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.adp-stats-actions .button .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
 .adp-logs-container {
     max-height: 500px;
     overflow-y: auto;
@@ -245,10 +265,17 @@
         grid-template-columns: 1fr;
     }
     
-    .adp-logs-actions .button {
+    .adp-logs-actions .button,
+    .adp-stats-actions .button {
         display: block;
         margin-bottom: 5px;
         margin-right: 0;
+        width: 100%;
+    }
+    
+    .adp-stats-actions {
+        flex-direction: column;
+        align-items: stretch;
     }
     
     .form-table th,
@@ -265,6 +292,7 @@
 
 /* Loading States */
 .adp-loading {
+    position: relative;
     opacity: 0.6;
     pointer-events: none;
 }
@@ -274,18 +302,39 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 20px;
-    margin: -10px 0 0 -10px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #0073aa;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #0073aa;
     border-radius: 50%;
     animation: adp-spin 1s linear infinite;
+    z-index: 1000;
 }
 
 @keyframes adp-spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Loading spinner for buttons */
+.button.adp-loading-btn {
+    position: relative;
+    pointer-events: none;
+}
+
+.button.adp-loading-btn .dashicons {
+    animation: adp-spin 1s linear infinite;
+}
+
+/* Container loading states */
+.adp-stats-grid.adp-loading,
+.adp-logs-container.adp-loading {
+    min-height: 200px;
+}
+
+.adp-status-grid.adp-loading {
+    min-height: 150px;
 }
 
 /* User Selection */
