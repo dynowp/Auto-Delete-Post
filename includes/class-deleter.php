@@ -49,11 +49,23 @@ class AutoDeletePostDeleter {
         $this->logger->logInfo("Starting post deletion. Limit: {$limit}, Delete attachments: " . ($deleteAttachments ? 'Yes' : 'No'));
         
         // Build query arguments
+        $postStatuses = $this->settings->getPostStatuses();
+        
+        // Handle 'any' status selection
+        if (in_array('any', $postStatuses)) {
+            $statusFilter = 'any';
+        } else {
+            $statusFilter = $postStatuses;
+        }
+        
         $args = array(
             'numberposts' => $limit,
-            'post_status' => 'any',
+            'post_status' => $statusFilter,
             'post_type' => 'any'
         );
+        
+        $statusList = is_array($statusFilter) ? implode(', ', $statusFilter) : $statusFilter;
+        $this->logger->logInfo("Post status filter applied: [{$statusList}]");
         
         // Apply date filter if enabled
         if ($this->settings->isDateFilterEnabled()) {
