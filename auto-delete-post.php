@@ -2,7 +2,7 @@
 /*
 Plugin Name: Auto Delete Post
 Description: A comprehensive plugin that provides an administrative interface for configuring automated deletion of posts, taxonomies, comments, and categories with advanced options and logging system.
-Version: 2.0.0
+Version: 2.1.0
 Author: DynoWP
 Author URI: https://dynowp.com
 License: GPL2
@@ -131,5 +131,4 @@ class AutoDeletePost {
     }
 }
 
-// Initialize the plugin
 new AutoDeletePost();
