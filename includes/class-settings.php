@@ -14,7 +14,7 @@ class AutoDeletePostSettings {
             'posts' => array(
                 'enabled' => false,
                 'limit' => 50,
-                'status' => 'any',
+                'status' => array('any'),
                 'delete_attachments' => false,
                 'date_filter_enabled' => false,
                 'date_filter_mode' => 'include',
@@ -195,6 +195,40 @@ class AutoDeletePostSettings {
     public function getSelectedUsers() {
         $posts = $this->getSetting('posts', array());
         return isset($posts['selected_users']) ? $posts['selected_users'] : array();
+    }
+    
+    public function getPostStatuses() {
+        $posts = $this->getSetting('posts', array());
+        $statuses = isset($posts['status']) ? $posts['status'] : array('any');
+        
+        // Ensure backward compatibility with old single status format
+        if (is_string($statuses)) {
+            $statuses = array($statuses);
+        }
+        
+        return $statuses;
+    }
+    
+    public function getAvailablePostStatuses() {
+        $statuses = array(
+            'any' => 'Any Status',
+            'publish' => 'Published',
+            'draft' => 'Draft',
+            'pending' => 'Pending Review',
+            'private' => 'Private',
+            'future' => 'Scheduled',
+            'trash' => 'Trash',
+            'auto-draft' => 'Auto Draft',
+            'inherit' => 'Inherit'
+        );
+        
+        // Get custom post statuses
+        $customStatuses = get_post_stati(array('_builtin' => false), 'objects');
+        foreach ($customStatuses as $status => $statusObj) {
+            $statuses[$status] = $statusObj->label;
+        }
+        
+        return $statuses;
     }
     
     public function validateSettings($settings) {
