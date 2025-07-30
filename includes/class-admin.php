@@ -21,6 +21,8 @@ class AutoDeletePostAdmin {
         add_action('wp_ajax_adp_refresh_logs', array($this, 'ajaxRefreshLogs'));
         add_action('wp_ajax_adp_refresh_statistics', array($this, 'ajaxRefreshStatistics'));
         add_action('wp_ajax_adp_refresh_status', array($this, 'ajaxRefreshStatus'));
+        
+        add_filter('plugin_action_links_' . plugin_basename(dirname(dirname(__FILE__)) . '/auto-delete-post.php'), array($this, 'addPluginActionLinks'));
     }
     
     public function addAdminMenu() {
@@ -245,5 +247,11 @@ class AutoDeletePostAdmin {
         wp_send_json_success(array(
             'status' => $status
         ));
+    }
+    
+    public function addPluginActionLinks($links) {
+        $settingsLink = '<a href="' . admin_url('tools.php?page=auto-delete-cron') . '">Settings</a>';
+        array_unshift($links, $settingsLink);
+        return $links;
     }
 }
